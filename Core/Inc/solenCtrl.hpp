@@ -100,7 +100,7 @@ void solenCtrl::init(){
 }
 
 HAL_StatusTypeDef solenCtrl::update(uint32_t RID,uint8_t RData[8]){
-	uint8_t data = RData[1];
+	uint8_t data = RData[0];
 	if (RID == V0.BID){
 		if(V0.value_update(data)){
 			return HAL_OK;
