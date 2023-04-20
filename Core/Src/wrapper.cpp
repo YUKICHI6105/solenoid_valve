@@ -6,7 +6,7 @@
  */
 #include <main.h>
 #include <CanCtrl.hpp>
-#include <solenCtrl.hpp>
+#include <SolenCtrl.hpp>
 
 CanCtrl Can;
 SolenCtrl Solen;
