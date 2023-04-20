@@ -9,8 +9,8 @@
 ../Core/Inc/SolenCtrl.hpp:107:26:HAL_StatusTypeDef SolenCtrl::get_pre_EMS()	16	static
 ../Core/Inc/SolenCtrl.hpp:111:26:HAL_StatusTypeDef SolenCtrl::set_pre_EMS(HAL_StatusTypeDef)	16	static
 ../Core/Inc/SolenCtrl.hpp:116:26:HAL_StatusTypeDef SolenCtrl::EMS_down()	24	static
-../Core/Inc/SolenCtrl.hpp:124:13:void SolenCtrl::check_safty_OK()	24	static
-../Core/Inc/SolenCtrl.hpp:130:13:void SolenCtrl::check_safty_ERROR()	24	static
+../Core/Inc/SolenCtrl.hpp:124:13:void SolenCtrl::check_Safty_OK()	24	static
+../Core/Inc/SolenCtrl.hpp:130:13:void SolenCtrl::check_Safty_ERROR()	24	static
 ../Core/Inc/SolenCtrl.hpp:8:8:solenoid::solenoid()	16	static
 ../Core/Inc/SolenCtrl.hpp:64:7:SolenCtrl::SolenCtrl()	24	static
 ../Core/Src/wrapper.cpp:14:6:void HAL_CAN_RxFifo0MsgPendingCallback(HAL_StatusTypeDef&)	32	static

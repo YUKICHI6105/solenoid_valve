@@ -2434,12 +2434,12 @@ LOAD c:/st/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .text._ZN9SolenCtrl8EMS_downEv
                 0x00000000080007f0       0x3a ./Core/Src/wrapper.o
                 0x00000000080007f0                SolenCtrl::EMS_down()
- .text._ZN9SolenCtrl14check_safty_OKEv
+ .text._ZN9SolenCtrl14check_Safty_OKEv
                 0x000000000800082a       0x32 ./Core/Src/wrapper.o
-                0x000000000800082a                SolenCtrl::check_safty_OK()
- .text._ZN9SolenCtrl17check_safty_ERROREv
+                0x000000000800082a                SolenCtrl::check_Safty_OK()
+ .text._ZN9SolenCtrl17check_Safty_ERROREv
                 0x000000000800085c       0x32 ./Core/Src/wrapper.o
-                0x000000000800085c                SolenCtrl::check_safty_ERROR()
+                0x000000000800085c                SolenCtrl::check_Safty_ERROR()
  *fill*         0x000000000800088e        0x2 
  .text._ZN8solenoidC2Ev
                 0x0000000008000890       0x24 ./Core/Src/wrapper.o
@@ -2963,7 +2963,7 @@ LOAD c:/st/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_line    0x00000000000055a1      0xd15 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
  .debug_line    0x00000000000062b6     0x19e2 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.o
 
-.debug_str      0x0000000000000000    0x8143a
+.debug_str      0x0000000000000000    0x8144f
  .debug_str     0x0000000000000000    0x7f105 ./Core/Src/main.o
                                       0x7f5d4 (size before relaxing)
  .debug_str     0x000000000007f105       0xc0 ./Core/Src/stm32f1xx_hal_msp.o
@@ -2972,21 +2972,21 @@ LOAD c:/st/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
                                       0x7ed6e (size before relaxing)
  .debug_str     0x000000000007f2cf       0x7e ./Core/Src/system_stm32f1xx.o
                                       0x7e814 (size before relaxing)
- .debug_str     0x000000000007f34d      0xc1d ./Core/Src/wrapper.o
+ .debug_str     0x000000000007f34d      0xc32 ./Core/Src/wrapper.o
                                       0x7f800 (size before relaxing)
- .debug_str     0x000000000007ff6a       0x36 ./Core/Startup/startup_stm32f103c8tx.o
+ .debug_str     0x000000000007ff7f       0x36 ./Core/Startup/startup_stm32f103c8tx.o
                                          0x77 (size before relaxing)
- .debug_str     0x000000000007ffa0      0x320 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o
+ .debug_str     0x000000000007ffb5      0x320 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o
                                       0x7ef47 (size before relaxing)
- .debug_str     0x00000000000802c0      0x41b ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_can.o
+ .debug_str     0x00000000000802d5      0x41b ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_can.o
                                       0x7f014 (size before relaxing)
- .debug_str     0x00000000000806db      0x263 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o
+ .debug_str     0x00000000000806f0      0x263 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o
                                       0x7ee93 (size before relaxing)
- .debug_str     0x000000000008093e      0x2ad ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o
+ .debug_str     0x0000000000080953      0x2ad ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o
                                       0x7eb9a (size before relaxing)
- .debug_str     0x0000000000080beb      0x21e ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
+ .debug_str     0x0000000000080c00      0x21e ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
                                       0x7ec43 (size before relaxing)
- .debug_str     0x0000000000080e09      0x631 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.o
+ .debug_str     0x0000000000080e1e      0x631 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.o
                                       0x7f24e (size before relaxing)
 
 .comment        0x0000000000000000       0x50

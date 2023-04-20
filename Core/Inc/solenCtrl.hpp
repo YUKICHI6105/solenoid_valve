@@ -71,8 +71,8 @@ public:
 	HAL_StatusTypeDef get_pre_EMS();
 	HAL_StatusTypeDef set_pre_EMS(HAL_StatusTypeDef ad);
 	HAL_StatusTypeDef EMS_down();
-	void check_safty_OK();
-	void check_safty_ERROR();
+	void check_Safty_OK();
+	void check_Safty_ERROR();
 };
 
 inline void SolenCtrl::init(){
@@ -121,13 +121,13 @@ inline HAL_StatusTypeDef SolenCtrl::EMS_down(){
 	return HAL_OK;
 }
 
-inline void SolenCtrl::check_safty_OK(){
+inline void SolenCtrl::check_Safty_OK(){
 	for (int i=0;i<7;i++){
 		Valve[i].safty_OK();
 	}
 }
 
-inline void SolenCtrl::check_safty_ERROR(){
+inline void SolenCtrl::check_Safty_ERROR(){
 	for (int i=0;i<7;i++){
 		Valve[i].safty_ERROR();
 	}

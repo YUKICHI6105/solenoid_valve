@@ -39,11 +39,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_line   00007c98  00000000  00000000  00042380  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0008143a  00000000  00000000  0004a018  2**0
+ 18 .debug_str    0008144f  00000000  00000000  0004a018  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000050  00000000  00000000  000cb452  2**0
+ 19 .comment      00000050  00000000  00000000  000cb467  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00001fcc  00000000  00000000  000cb4a4  2**2
+ 20 .debug_frame  00001fcc  00000000  00000000  000cb4b8  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1269,8 +1269,8 @@ inline void solenoid::EMS(){
 
 0800073c <_ZN9SolenCtrl4initEv>:
 	HAL_StatusTypeDef EMS_down();
-	void check_safty_OK();
-	void check_safty_ERROR();
+	void check_Safty_OK();
+	void check_Safty_ERROR();
 };
 
 inline void SolenCtrl::init(){
@@ -1422,9 +1422,9 @@ inline HAL_StatusTypeDef SolenCtrl::EMS_down(){
  8000826:	46bd      	mov	sp, r7
  8000828:	bd80      	pop	{r7, pc}
 
-0800082a <_ZN9SolenCtrl14check_safty_OKEv>:
+0800082a <_ZN9SolenCtrl14check_Safty_OKEv>:
 
-inline void SolenCtrl::check_safty_OK(){
+inline void SolenCtrl::check_Safty_OK(){
  800082a:	b580      	push	{r7, lr}
  800082c:	b084      	sub	sp, #16
  800082e:	af00      	add	r7, sp, #0
@@ -1434,7 +1434,7 @@ inline void SolenCtrl::check_safty_OK(){
  8000834:	60fb      	str	r3, [r7, #12]
  8000836:	68fb      	ldr	r3, [r7, #12]
  8000838:	2b06      	cmp	r3, #6
- 800083a:	dc0b      	bgt.n	8000854 <_ZN9SolenCtrl14check_safty_OKEv+0x2a>
+ 800083a:	dc0b      	bgt.n	8000854 <_ZN9SolenCtrl14check_Safty_OKEv+0x2a>
 		Valve[i].safty_OK();
  800083c:	68fb      	ldr	r3, [r7, #12]
  800083e:	011b      	lsls	r3, r3, #4
@@ -1447,7 +1447,7 @@ inline void SolenCtrl::check_safty_OK(){
  800084c:	68fb      	ldr	r3, [r7, #12]
  800084e:	3301      	adds	r3, #1
  8000850:	60fb      	str	r3, [r7, #12]
- 8000852:	e7f0      	b.n	8000836 <_ZN9SolenCtrl14check_safty_OKEv+0xc>
+ 8000852:	e7f0      	b.n	8000836 <_ZN9SolenCtrl14check_Safty_OKEv+0xc>
 	}
 }
  8000854:	bf00      	nop
@@ -1455,9 +1455,9 @@ inline void SolenCtrl::check_safty_OK(){
  8000858:	46bd      	mov	sp, r7
  800085a:	bd80      	pop	{r7, pc}
 
-0800085c <_ZN9SolenCtrl17check_safty_ERROREv>:
+0800085c <_ZN9SolenCtrl17check_Safty_ERROREv>:
 
-inline void SolenCtrl::check_safty_ERROR(){
+inline void SolenCtrl::check_Safty_ERROR(){
  800085c:	b580      	push	{r7, lr}
  800085e:	b084      	sub	sp, #16
  8000860:	af00      	add	r7, sp, #0
@@ -1467,7 +1467,7 @@ inline void SolenCtrl::check_safty_ERROR(){
  8000866:	60fb      	str	r3, [r7, #12]
  8000868:	68fb      	ldr	r3, [r7, #12]
  800086a:	2b06      	cmp	r3, #6
- 800086c:	dc0b      	bgt.n	8000886 <_ZN9SolenCtrl17check_safty_ERROREv+0x2a>
+ 800086c:	dc0b      	bgt.n	8000886 <_ZN9SolenCtrl17check_Safty_ERROREv+0x2a>
 		Valve[i].safty_ERROR();
  800086e:	68fb      	ldr	r3, [r7, #12]
  8000870:	011b      	lsls	r3, r3, #4
@@ -1480,7 +1480,7 @@ inline void SolenCtrl::check_safty_ERROR(){
  800087e:	68fb      	ldr	r3, [r7, #12]
  8000880:	3301      	adds	r3, #1
  8000882:	60fb      	str	r3, [r7, #12]
- 8000884:	e7f0      	b.n	8000868 <_ZN9SolenCtrl17check_safty_ERROREv+0xc>
+ 8000884:	e7f0      	b.n	8000868 <_ZN9SolenCtrl17check_Safty_ERROREv+0xc>
 	}
 }
  8000886:	bf00      	nop
@@ -1697,9 +1697,9 @@ void main_cpp(){
  80009f8:	b2db      	uxtb	r3, r3
  80009fa:	2b00      	cmp	r3, #0
  80009fc:	d002      	beq.n	8000a04 <main_cpp+0xcc>
-    			Solen.check_safty_OK();
+    			Solen.check_Safty_OK();
  80009fe:	4818      	ldr	r0, [pc, #96]	; (8000a60 <main_cpp+0x128>)
- 8000a00:	f7ff ff13 	bl	800082a <_ZN9SolenCtrl14check_safty_OKEv>
+ 8000a00:	f7ff ff13 	bl	800082a <_ZN9SolenCtrl14check_Safty_OKEv>
     		}
 
     	}
@@ -1720,9 +1720,9 @@ void main_cpp(){
  8000a1e:	2300      	movs	r3, #0
  8000a20:	2b00      	cmp	r3, #0
  8000a22:	d002      	beq.n	8000a2a <main_cpp+0xf2>
-    			Solen.check_safty_ERROR();
+    			Solen.check_Safty_ERROR();
  8000a24:	480e      	ldr	r0, [pc, #56]	; (8000a60 <main_cpp+0x128>)
- 8000a26:	f7ff ff19 	bl	800085c <_ZN9SolenCtrl17check_safty_ERROREv>
+ 8000a26:	f7ff ff19 	bl	800085c <_ZN9SolenCtrl17check_Safty_ERROREv>
     		}
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){//EMS解除時
  8000a2a:	4b11      	ldr	r3, [pc, #68]	; (8000a70 <main_cpp+0x138>)
@@ -1735,9 +1735,9 @@ void main_cpp(){
  8000a3a:	b2db      	uxtb	r3, r3
  8000a3c:	2b00      	cmp	r3, #0
  8000a3e:	d006      	beq.n	8000a4e <main_cpp+0x116>
-    			Solen.check_safty_ERROR();
+    			Solen.check_Safty_ERROR();
  8000a40:	4807      	ldr	r0, [pc, #28]	; (8000a60 <main_cpp+0x128>)
- 8000a42:	f7ff ff0b 	bl	800085c <_ZN9SolenCtrl17check_safty_ERROREv>
+ 8000a42:	f7ff ff0b 	bl	800085c <_ZN9SolenCtrl17check_Safty_ERROREv>
     			Solen.set_pre_EMS(HAL_OK);
  8000a46:	2100      	movs	r1, #0
  8000a48:	4805      	ldr	r0, [pc, #20]	; (8000a60 <main_cpp+0x128>)

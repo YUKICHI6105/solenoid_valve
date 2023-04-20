@@ -57,16 +57,16 @@ void main_cpp(){
     		  	Solen.EMS_down();
     		}
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){//modeの状態違反の確認
-    			Solen.check_safty_OK();
+    			Solen.check_Safty_OK();
     		}
 
     	}
     	if(Solen.get_pre_EMS() == HAL_ERROR){
     		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){//EMS継続
-    			Solen.check_safty_ERROR();
+    			Solen.check_Safty_ERROR();
     		}
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){//EMS解除時
-    			Solen.check_safty_ERROR();
+    			Solen.check_Safty_ERROR();
     			Solen.set_pre_EMS(HAL_OK);
     		}
     	}
