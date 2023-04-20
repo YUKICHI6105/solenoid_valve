@@ -9,13 +9,13 @@
 #include <solenCtrl.hpp>
 
 CanCtrl Can;
-solenCtrl solen;
+SolenCtrl solen;
 
 void HAL_CAN_RxFifo0MsgPendingCallback(HAL_StatusTypeDef &hcan){
 	uint32_t RID = 0x110;
 	uint8_t RData[8];
 	if (Can.Canrx(RID,RData) == HAL_OK){
-		if(solen.get_ad()==HAL_OK){
+		if(solen.get_pre_EMS()==HAL_OK){
 			if (solen.update(RID,RData) == HAL_OK){
 
 			}
@@ -52,7 +52,7 @@ void main_cpp(){
 
 	while(true){//safty_roop
     	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
-    	if(solen.get_ad() == HAL_OK){
+    	if(solen.get_pre_EMS() == HAL_OK){
     		if((GPIOC->IDR & !GPIO_IDR_IDR13)){
     		  	solen.EMS_down();
     		}
@@ -61,13 +61,13 @@ void main_cpp(){
     		}
 
     	}
-    	if(solen.get_ad() == HAL_ERROR){
+    	if(solen.get_pre_EMS() == HAL_ERROR){
     		if((GPIOC->IDR & !GPIO_IDR_IDR13)){
     			solen.check_safty_E();
     		}
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){
     			solen.check_safty_E();
-    			solen.set_ad(HAL_OK);
+    			solen.set_pre_EMS(HAL_OK);
     		}
     	}
     	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);
