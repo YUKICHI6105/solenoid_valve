@@ -36,7 +36,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 void main_cpp(){
 	Can.init();
 	Solen.init();
-
 	for(uint8_t i=0;i<3;i++){
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
@@ -46,6 +45,7 @@ void main_cpp(){
 		HAL_Delay(100);
 		HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+		HAL_Delay(100);
 	}
 	HAL_CAN_Start(&hcan);
 	HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING);

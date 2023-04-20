@@ -92,7 +92,7 @@ int main(void)
   MX_CAN_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  void main_cpp();
+  main_cpp();
   /* USER CODE END 2 */
 
   /* Infinite loop */
