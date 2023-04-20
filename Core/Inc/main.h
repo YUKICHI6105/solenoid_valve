@@ -68,20 +68,20 @@ void main_cpp(void);
 #define LED_YELLOW_GPIO_Port GPIOA
 #define LED_RED_Pin GPIO_PIN_0
 #define LED_RED_GPIO_Port GPIOB
-#define V0_Pin GPIO_PIN_10
-#define V0_GPIO_Port GPIOB
-#define V1_Pin GPIO_PIN_11
-#define V1_GPIO_Port GPIOB
-#define V2_Pin GPIO_PIN_12
-#define V2_GPIO_Port GPIOB
-#define V3_Pin GPIO_PIN_13
-#define V3_GPIO_Port GPIOB
-#define V4_Pin GPIO_PIN_14
-#define V4_GPIO_Port GPIOB
-#define V5_Pin GPIO_PIN_15
-#define V5_GPIO_Port GPIOB
-#define V6_Pin GPIO_PIN_8
-#define V6_GPIO_Port GPIOA
+#define Valve0_Pin GPIO_PIN_10
+#define Valve0_GPIO_Port GPIOB
+#define Valve1_Pin GPIO_PIN_11
+#define Valve1_GPIO_Port GPIOB
+#define Valve2_Pin GPIO_PIN_12
+#define Valve2_GPIO_Port GPIOB
+#define Valve3_Pin GPIO_PIN_13
+#define Valve3_GPIO_Port GPIOB
+#define Valve4_Pin GPIO_PIN_14
+#define Valve4_GPIO_Port GPIOB
+#define Valve5_Pin GPIO_PIN_15
+#define Valve5_GPIO_Port GPIOB
+#define Valve6_Pin GPIO_PIN_8
+#define Valve6_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

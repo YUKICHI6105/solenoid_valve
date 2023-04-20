@@ -7,23 +7,23 @@
 
 struct solenoid{
 	uint32_t BID;
-	uint16_t V_Pin;                 //GPIOPin
+	uint16_t Valve_Pin;                 //GPIOPin
 	GPIO_TypeDef* GPIO = GPIOB;     //GPIOグループ
 	HAL_StatusTypeDef mode = HAL_OK;//動作許可(今回はデフォルトで許可)
 	HAL_StatusTypeDef value_update(uint8_t Rdata);
-	void safty_O();
-	void safty();
+	void safty_OK();
+	void safty_ERROR();
 	void EMS();
 };
 
 inline HAL_StatusTypeDef solenoid::value_update(uint8_t Rdata){
 	if (mode == HAL_OK){
 		if (Rdata == 0x01){
-			HAL_GPIO_WritePin(GPIO,V_Pin,GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_SET);
 			return HAL_OK;
 		}
 		if (Rdata == 0x00){
-			HAL_GPIO_WritePin(GPIO,V_Pin,GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 			return HAL_OK;
 		}
 		else{
@@ -35,18 +35,18 @@ inline HAL_StatusTypeDef solenoid::value_update(uint8_t Rdata){
 	}
 }
 
-inline void solenoid::safty_O(){
+inline void solenoid::safty_OK(){
 	if(mode == HAL_ERROR){
 //		if(Pin == 1){
-		HAL_GPIO_WritePin(GPIO,V_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 //		}
 	}
 }
 
-inline void solenoid::safty(){
+inline void solenoid::safty_ERROR(){
 //		if(Pin == 0){}
 //		else{
-		    HAL_GPIO_WritePin(GPIO,V_Pin,GPIO_PIN_RESET);
+		    HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 //		}
 //		if(mode == HAL_ERROR){}
 //		else{
@@ -55,7 +55,7 @@ inline void solenoid::safty(){
 }
 
 inline void solenoid::EMS(){
-	HAL_GPIO_WritePin(GPIO,V_Pin,GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 	if(mode == HAL_OK){
 	   mode = HAL_ERROR;
 	}
@@ -71,21 +71,21 @@ public:
 	HAL_StatusTypeDef get_pre_EMS();
 	HAL_StatusTypeDef set_pre_EMS(HAL_StatusTypeDef ad);
 	HAL_StatusTypeDef EMS_down();
-	void check_safty_O();
-	void check_safty_E();
+	void check_safty_OK();
+	void check_safty_ERROR();
 };
 
 inline void SolenCtrl::init(){
 	for (uint32_t i=0;i<0x7;i++){
 		Valve[i].BID = (0x101+i);
 	}
-	Valve[0].V_Pin = V0_Pin;
-	Valve[1].V_Pin = V1_Pin;
-	Valve[2].V_Pin = V2_Pin;
-	Valve[3].V_Pin = V3_Pin;
-	Valve[4].V_Pin = V4_Pin;
-	Valve[5].V_Pin = V5_Pin;
-	Valve[6].V_Pin = V6_Pin;
+	Valve[0].Valve_Pin = Valve0_Pin;
+	Valve[1].Valve_Pin = Valve1_Pin;
+	Valve[2].Valve_Pin = Valve2_Pin;
+	Valve[3].Valve_Pin = Valve3_Pin;
+	Valve[4].Valve_Pin = Valve4_Pin;
+	Valve[5].Valve_Pin = Valve5_Pin;
+	Valve[6].Valve_Pin = Valve6_Pin;
 	Valve[6].GPIO = GPIOC;
 }
 
@@ -121,14 +121,14 @@ inline HAL_StatusTypeDef SolenCtrl::EMS_down(){
 	return HAL_OK;
 }
 
-inline void SolenCtrl::check_safty_O(){
+inline void SolenCtrl::check_safty_OK(){
 	for (int i=0;i<7;i++){
-		Valve[i].safty_O();
+		Valve[i].safty_OK();
 	}
 }
 
-inline void SolenCtrl::check_safty_E(){
+inline void SolenCtrl::check_safty_ERROR(){
 	for (int i=0;i<7;i++){
-		Valve[i].safty_O();
+		Valve[i].safty_ERROR();
 	}
 }

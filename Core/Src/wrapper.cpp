@@ -53,20 +53,20 @@ void main_cpp(){
 	while(true){//safty_roop
     	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
     	if(Solen.get_pre_EMS() == HAL_OK){
-    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){
+    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){//予備の緊急停止
     		  	Solen.EMS_down();
     		}
-    		if((GPIOC->IDR & GPIO_IDR_IDR13)){
-    			Solen.check_safty_O();
+    		if((GPIOC->IDR & GPIO_IDR_IDR13)){//modeの状態違反の確認
+    			Solen.check_safty_OK();
     		}
 
     	}
     	if(Solen.get_pre_EMS() == HAL_ERROR){
-    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){
-    			Solen.check_safty_E();
+    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){//EMS継続
+    			Solen.check_safty_ERROR();
     		}
-    		if((GPIOC->IDR & GPIO_IDR_IDR13)){
-    			Solen.check_safty_E();
+    		if((GPIOC->IDR & GPIO_IDR_IDR13)){//EMS解除時
+    			Solen.check_safty_ERROR();
     			Solen.set_pre_EMS(HAL_OK);
     		}
     	}
