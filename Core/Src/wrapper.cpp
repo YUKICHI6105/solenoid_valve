@@ -9,14 +9,14 @@
 #include <solenCtrl.hpp>
 
 CanCtrl Can;
-SolenCtrl solen;
+SolenCtrl Solen;
 
 void HAL_CAN_RxFifo0MsgPendingCallback(HAL_StatusTypeDef &hcan){
 	uint32_t RID = 0x110;
 	uint8_t RData[8];
 	if (Can.Canrx(RID,RData) == HAL_OK){
-		if(solen.get_pre_EMS()==HAL_OK){
-			if (solen.update(RID,RData) == HAL_OK){
+		if(Solen.get_pre_EMS()==HAL_OK){
+			if (Solen.update(RID,RData) == HAL_OK){
 
 			}
 		}
@@ -24,7 +24,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(HAL_StatusTypeDef &hcan){
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	if(solen.EMS_down()==HAL_OK){
+	if(Solen.EMS_down()==HAL_OK){
 		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port,LED_RED_Pin,GPIO_PIN_SET);
 	}
@@ -35,7 +35,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 
 void main_cpp(){
 	Can.init();
-	solen.init();
+	Solen.init();
 
 	for(uint8_t i=0;i<3;i++){
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
@@ -52,22 +52,22 @@ void main_cpp(){
 
 	while(true){//safty_roop
     	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
-    	if(solen.get_pre_EMS() == HAL_OK){
-    		if((GPIOC->IDR & !GPIO_IDR_IDR13)){
-    		  	solen.EMS_down();
+    	if(Solen.get_pre_EMS() == HAL_OK){
+    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){
+    		  	Solen.EMS_down();
     		}
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){
-    			solen.check_safty_O();
+    			Solen.check_safty_O();
     		}
 
     	}
-    	if(solen.get_pre_EMS() == HAL_ERROR){
-    		if((GPIOC->IDR & !GPIO_IDR_IDR13)){
-    			solen.check_safty_E();
+    	if(Solen.get_pre_EMS() == HAL_ERROR){
+    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){
+    			Solen.check_safty_E();
     		}
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){
-    			solen.check_safty_E();
-    			solen.set_pre_EMS(HAL_OK);
+    			Solen.check_safty_E();
+    			Solen.set_pre_EMS(HAL_OK);
     		}
     	}
     	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);

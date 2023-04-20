@@ -1242,7 +1242,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
  8000720:	af00      	add	r7, sp, #0
  8000722:	4603      	mov	r3, r0
  8000724:	80fb      	strh	r3, [r7, #6]
-	if(solen.EMS_down()==HAL_OK){
+	if(Solen.EMS_down()==HAL_OK){
  8000726:	480f      	ldr	r0, [pc, #60]	; (8000764 <HAL_GPIO_EXTI_Callback+0x48>)
  8000728:	f7ff ffb1 	bl	800068e <_ZN9SolenCtrl8EMS_downEv>
  800072c:	4603      	mov	r3, r0
@@ -1284,7 +1284,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
  800076c:	40010c00 	.word	0x40010c00
 
 08000770 <_Z41__static_initialization_and_destruction_0ii>:
-    			solen.set_pre_EMS(HAL_OK);
+    			Solen.set_pre_EMS(HAL_OK);
     		}
     	}
     	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);
@@ -1302,7 +1302,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
  8000782:	f64f 72ff 	movw	r2, #65535	; 0xffff
  8000786:	4293      	cmp	r3, r2
  8000788:	d102      	bne.n	8000790 <_Z41__static_initialization_and_destruction_0ii+0x20>
-SolenCtrl solen;
+SolenCtrl Solen;
  800078a:	4803      	ldr	r0, [pc, #12]	; (8000798 <_Z41__static_initialization_and_destruction_0ii+0x28>)
  800078c:	f7ff ffae 	bl	80006ec <_ZN9SolenCtrlC1Ev>
 }
