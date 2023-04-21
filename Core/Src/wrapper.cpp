@@ -11,7 +11,8 @@
 CanCtrl Can;
 SolenCtrl Solen;
 
-void HAL_CAN_RxFifo0MsgPendingCallback(HAL_StatusTypeDef &hcan){
+extern"C"{
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 	uint32_t RID = 0x110;
 	uint8_t RData[8];
 	if (Can.Canrx(RID,RData) == HAL_OK){
@@ -33,6 +34,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);;
 	}
 }
+}
 
 void main_cpp(){
 	Can.init();
@@ -51,6 +53,7 @@ void main_cpp(){
 	HAL_CAN_Start(&hcan);
 	HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 
+	HAL_GPIO_WritePin(Valve0_GPIO_Port, Valve0_Pin, GPIO_PIN_SET);
 	while(true){//safty_roop
     	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
     	if(Solen.get_pre_EMS() == HAL_OK){

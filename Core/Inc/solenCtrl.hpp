@@ -18,11 +18,11 @@ struct solenoid{
 
 inline HAL_StatusTypeDef solenoid::value_update(uint8_t Rdata){
 	if (mode == HAL_OK){
-		if (Rdata == 0x01){
+		if (Rdata == 0x1){
 			HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_SET);
 			return HAL_OK;
 		}
-		if (Rdata == 0x00){
+		if (Rdata == 0x0){
 			HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 			return HAL_OK;
 		}
@@ -61,6 +61,7 @@ inline void solenoid::EMS(){
 	}
 }
 
+
 class SolenCtrl{
 private:
 	HAL_StatusTypeDef pre_EMS = HAL_ERROR;//EMSの管理
@@ -93,12 +94,14 @@ inline HAL_StatusTypeDef SolenCtrl::update(uint32_t RID,uint8_t rxData[8]){
 	uint8_t data = rxData[0];
 	for(int i=0;i<7;i++){
 		if(RID == Valve[i].BID){
-			if(Valve[i].value_update(data)){
+			if(Valve[i].value_update(data)==HAL_OK){
+				HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
 				return HAL_OK;
 			}
-			else {
-				return HAL_ERROR;
-			}
+			//else {
+
+				//return HAL_ERROR;
+			//}
 		}
 	}
 	return HAL_ERROR;
@@ -119,14 +122,15 @@ inline HAL_StatusTypeDef SolenCtrl::EMS_down(){
 	}
 	pre_EMS = HAL_ERROR;
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
 	return HAL_OK;
 }
 
 inline void SolenCtrl::check_Safty_OK(){
 	for (int i=0;i<7;i++){
 		Valve[i].safty_OK();
-		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 	}
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 }
 
 inline void SolenCtrl::check_Safty_ERROR(){

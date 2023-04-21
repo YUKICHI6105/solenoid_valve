@@ -16,11 +16,12 @@ extern "C"{
 class CanCtrl {
 private:
 	uint32_t test;
+	uint8_t d;
 	CAN_RxHeaderTypeDef RxHeader;//受信用フレーム設定
 	CAN_FilterTypeDef filter;//受信時に中身を仕分けるためのパラメーター設定
 public:
     void init();
-	HAL_StatusTypeDef Canrx(uint32_t RID,uint8_t data[8]);//受信関数(エラー判定のみ)内容は引数に入れ込む。
+	HAL_StatusTypeDef Canrx(uint32_t& RID,uint8_t data[8]);//受信関数(エラー判定のみ)内容は引数に入れ込む。
 };
 
 void CanCtrl::init(){
@@ -38,12 +39,13 @@ void CanCtrl::init(){
 	HAL_CAN_ConfigFilter(&hcan, &filter);
 }
 
-HAL_StatusTypeDef CanCtrl::Canrx(uint32_t RID,uint8_t data[8]){
+HAL_StatusTypeDef CanCtrl::Canrx(uint32_t& RID,uint8_t data[8]){
 	if (HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &RxHeader, data) == HAL_OK){
 		RID = RxHeader.StdId;
 		test = RID;
+		d=data[0];
 		HAL_GPIO_WritePin(GPIOB,CAN_LED_Pin,GPIO_PIN_SET);
-		HAL_Delay(80);
+//		HAL_Delay(80);
 		HAL_GPIO_WritePin(GPIOB,CAN_LED_Pin,GPIO_PIN_RESET);
 		return HAL_OK;
 	}
