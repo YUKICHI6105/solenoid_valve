@@ -7,7 +7,7 @@
 
 struct solenoid{
 	uint32_t BID;
-	uint16_t Valve_Pin;                 //GPIOPin
+	uint16_t Valve_Pin;             //GPIOPin
 	GPIO_TypeDef* GPIO = GPIOB;     //GPIOグループ
 	HAL_StatusTypeDef mode = HAL_OK;//動作許可(今回はデフォルトで許可)
 	HAL_StatusTypeDef value_update(uint8_t Rdata);
