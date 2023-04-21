@@ -25,8 +25,9 @@ void HAL_CAN_RxFifo0MsgPendingCallback(HAL_StatusTypeDef &hcan){
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	if(Solen.EMS_down()==HAL_OK){
-		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port,LED_RED_Pin,GPIO_PIN_SET);
+//		HAL_Delay(300);
+//		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
 	}
 	else{
 		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);;
@@ -53,21 +54,31 @@ void main_cpp(){
 	while(true){//safty_roop
     	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
     	if(Solen.get_pre_EMS() == HAL_OK){
-    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){//予備の緊急停止
+/*    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){//予備の緊急停止
     		  	Solen.EMS_down();
-    		}
+    		}*/
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){//modeの状態違反の確認
     			Solen.check_Safty_OK();
+    		}
+    		else{//予備の緊急停止
+    			Solen.EMS_down();//コールバックだけだと一定の確率でバグる。意味不明。
     		}
 
     	}
     	if(Solen.get_pre_EMS() == HAL_ERROR){
-    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){//EMS継続
+/*    		if((GPIOC->IDR & !(GPIO_IDR_IDR13))){//EMS継続
     			Solen.check_Safty_ERROR();
-    		}
+    			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
+    			HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+    		}*/
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){//EMS解除時
     			Solen.check_Safty_ERROR();
     			Solen.set_pre_EMS(HAL_OK);
+    			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
+    		}
+    		else{//EMS継続
+    			Solen.check_Safty_ERROR();
+    			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
     		}
     	}
     	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);

@@ -57,13 +57,13 @@ inline void solenoid::safty_ERROR(){
 inline void solenoid::EMS(){
 	HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 	if(mode == HAL_OK){
-	   mode = HAL_ERROR;
+//	   mode = HAL_ERROR;
 	}
 }
 
 class SolenCtrl{
 private:
-	HAL_StatusTypeDef pre_EMS = HAL_OK;//EMSの管理
+	HAL_StatusTypeDef pre_EMS = HAL_ERROR;//EMSの管理
 	solenoid Valve[7];
 public:
 	void init();
@@ -118,12 +118,14 @@ inline HAL_StatusTypeDef SolenCtrl::EMS_down(){
 		Valve[i].EMS();
 	}
 	pre_EMS = HAL_ERROR;
+	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
 	return HAL_OK;
 }
 
 inline void SolenCtrl::check_Safty_OK(){
 	for (int i=0;i<7;i++){
 		Valve[i].safty_OK();
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 	}
 }
 

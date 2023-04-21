@@ -15,6 +15,7 @@ extern "C"{
 
 class CanCtrl {
 private:
+	uint32_t test;
 	CAN_RxHeaderTypeDef RxHeader;//受信用フレーム設定
 	CAN_FilterTypeDef filter;//受信時に中身を仕分けるためのパラメーター設定
 public:
@@ -23,7 +24,7 @@ public:
 };
 
 void CanCtrl::init(){
-	filter.FilterIdHigh         = 0x7ff << 5;                 // フィルターIDの上位16ビット
+	filter.FilterIdHigh         = 0x100 << 5;                 // フィルターIDの上位16ビット
 	filter.FilterIdLow          = 0;                        // フィルターIDの下位16ビット
 	filter.FilterMaskIdHigh     = 0x7f8 << 5;               // フィルターマスクの上位16ビット
 	filter.FilterMaskIdLow      = 0b110;                    // フィルターマスクの下位16ビット
@@ -40,8 +41,9 @@ void CanCtrl::init(){
 HAL_StatusTypeDef CanCtrl::Canrx(uint32_t RID,uint8_t data[8]){
 	if (HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &RxHeader, data) == HAL_OK){
 		RID = RxHeader.StdId;
+		test = RID;
 		HAL_GPIO_WritePin(GPIOB,CAN_LED_Pin,GPIO_PIN_SET);
-		HAL_Delay(10);
+		HAL_Delay(80);
 		HAL_GPIO_WritePin(GPIOB,CAN_LED_Pin,GPIO_PIN_RESET);
 		return HAL_OK;
 	}
