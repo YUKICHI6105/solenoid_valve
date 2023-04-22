@@ -5,25 +5,33 @@
  *      Author: ykc
  */
 
+enum class mode {
+	disable,
+	enable,
+};
+
 struct solenoid{
 	uint32_t BID;
-	uint16_t Valve_Pin;             //GPIOPin
-	GPIO_TypeDef* GPIO = GPIOB;     //GPIOグループ
-	HAL_StatusTypeDef mode = HAL_OK;//動作許可(今回はデフォルトで許可)
+	uint16_t Valve_Pin;            //GPIOPin
+	GPIO_TypeDef* GPIO = GPIOB;    //GPIOグループ
+	uint32_t msk;                  //pinの状態の確認
+	mode valve_Mode = mode::enable;//動作許可(今回はデフォルトで許可)
 	HAL_StatusTypeDef value_update(uint8_t Rdata);
 	void safty_OK();
 	void safty_ERROR();
-	void EMS();
+	void EMS_stop();
 };
 
 inline HAL_StatusTypeDef solenoid::value_update(uint8_t Rdata){
-	if (mode == HAL_OK){
+	if (valve_Mode == mode::enable){
 		if (Rdata == 0x1){
 			HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_SET);
+			HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
 			return HAL_OK;
 		}
 		if (Rdata == 0x0){
 			HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
 			return HAL_OK;
 		}
 		else{
@@ -36,41 +44,41 @@ inline HAL_StatusTypeDef solenoid::value_update(uint8_t Rdata){
 }
 
 inline void solenoid::safty_OK(){
-	if(mode == HAL_ERROR){
-//		if(Pin == 1){
+	if(valve_Mode == mode::disable){
+//		if(GPIO->IDR & msk){
 		HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 //		}
 	}
 }
 
 inline void solenoid::safty_ERROR(){
-//		if(Pin == 0){}
+//	    if(!(GPIO->IDR & msk)){}
 //		else{
 		    HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 //		}
-//		if(mode == HAL_ERROR){}
-//		else{
-//		    mode = HAL_ERROR;
-//		}
+		if(valve_Mode == mode::disable){}
+		else{
+//		    valve_Mode = disable;
+		}
 }
 
-inline void solenoid::EMS(){
+inline void solenoid::EMS_stop(){
 	HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
-	if(mode == HAL_OK){
-//	   mode = HAL_ERROR;
+	if(valve_Mode == mode::enable){
+//	   valve_Mode = disable;
 	}
 }
 
 
 class SolenCtrl{
 private:
-	HAL_StatusTypeDef pre_EMS = HAL_ERROR;//EMSの管理
+	mode pre_EMS = mode::disable;//EMSの管理
 	solenoid Valve[7];
 public:
 	void init();
 	HAL_StatusTypeDef update(uint32_t RID,uint8_t rxData[8]);
-	HAL_StatusTypeDef get_pre_EMS();
-	HAL_StatusTypeDef set_pre_EMS(HAL_StatusTypeDef ad);
+	mode get_pre_EMS();
+	HAL_StatusTypeDef set_pre_EMS(mode ems);
 	HAL_StatusTypeDef EMS_down();
 	void check_Safty_OK();
 	void check_Safty_ERROR();
@@ -87,7 +95,14 @@ inline void SolenCtrl::init(){
 	Valve[4].Valve_Pin = Valve4_Pin;
 	Valve[5].Valve_Pin = Valve5_Pin;
 	Valve[6].Valve_Pin = Valve6_Pin;
-	Valve[6].GPIO = GPIOC;
+	Valve[6].GPIO = Valve6_GPIO_Port;
+	Valve[0].msk=GPIO_ODR_ODR10;
+	Valve[1].msk=GPIO_ODR_ODR11;
+	Valve[2].msk=GPIO_ODR_ODR12;
+	Valve[3].msk=GPIO_ODR_ODR13;
+	Valve[4].msk=GPIO_ODR_ODR14;
+	Valve[5].msk=GPIO_ODR_ODR15;
+	Valve[6].msk=GPIO_ODR_ODR8;
 }
 
 inline HAL_StatusTypeDef SolenCtrl::update(uint32_t RID,uint8_t rxData[8]){
@@ -95,32 +110,27 @@ inline HAL_StatusTypeDef SolenCtrl::update(uint32_t RID,uint8_t rxData[8]){
 	for(int i=0;i<7;i++){
 		if(RID == Valve[i].BID){
 			if(Valve[i].value_update(data)==HAL_OK){
-				HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
 				return HAL_OK;
 			}
-			//else {
-
-				//return HAL_ERROR;
-			//}
 		}
 	}
 	return HAL_ERROR;
 }
 
-inline HAL_StatusTypeDef SolenCtrl::get_pre_EMS(){
+inline mode SolenCtrl::get_pre_EMS(){
 	return pre_EMS;
 }
 
-inline HAL_StatusTypeDef SolenCtrl::set_pre_EMS(HAL_StatusTypeDef ad){
-	pre_EMS = ad;
+inline HAL_StatusTypeDef SolenCtrl::set_pre_EMS(mode ems){
+	pre_EMS = ems;
 	return HAL_OK;
 }
 
 inline HAL_StatusTypeDef SolenCtrl::EMS_down(){
 	for(int i=0;i<7;i++){
-		Valve[i].EMS();
+		Valve[i].EMS_stop();
 	}
-	pre_EMS = HAL_ERROR;
+	pre_EMS = mode::enable;
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
 	return HAL_OK;
