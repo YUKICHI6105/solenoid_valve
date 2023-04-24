@@ -26,7 +26,9 @@ inline HAL_StatusTypeDef solenoid::value_update(uint8_t Rdata){
 	if (valve_Mode == mode::enable){
 		if (Rdata == 0x1){
 			HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_SET);
+			if(!(GPIO==GPIOA)){
 			HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
+			}
 			return HAL_OK;
 		}
 		if (Rdata == 0x0){
@@ -45,14 +47,14 @@ inline HAL_StatusTypeDef solenoid::value_update(uint8_t Rdata){
 
 inline void solenoid::safty_OK(){
 	if(valve_Mode == mode::disable){
-//		if(GPIO->IDR & msk){
+//		if(GPIO->ODR & msk){
 		HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 //		}
 	}
 }
 
 inline void solenoid::safty_ERROR(){
-//	    if(!(GPIO->IDR & msk)){}
+//	    if(!(GPIO->ODR & msk)){}
 //		else{
 		    HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
 //		}
@@ -130,7 +132,7 @@ inline HAL_StatusTypeDef SolenCtrl::EMS_down(){
 	for(int i=0;i<7;i++){
 		Valve[i].EMS_stop();
 	}
-	pre_EMS = mode::enable;
+	pre_EMS = mode::disable;
 	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_SET);
 	HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
 	return HAL_OK;
