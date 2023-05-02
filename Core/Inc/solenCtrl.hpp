@@ -79,7 +79,7 @@ private:
 public:
 	void init();
 	HAL_StatusTypeDef update(uint32_t RID,uint8_t rxData[8]);
-	mode get_pre_EMS();
+	mode getPreEMS();
 	HAL_StatusTypeDef set_pre_EMS(mode ems);
 	HAL_StatusTypeDef EMS_down();
 	void check_Safty_OK();
@@ -119,7 +119,7 @@ inline HAL_StatusTypeDef SolenCtrl::update(uint32_t RID,uint8_t rxData[8]){
 	return HAL_ERROR;
 }
 
-inline mode SolenCtrl::get_pre_EMS(){
+inline mode SolenCtrl::getPreEMS(){
 	return pre_EMS;
 }
 

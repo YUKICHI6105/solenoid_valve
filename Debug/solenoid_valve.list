@@ -1112,7 +1112,7 @@ void SystemInit (void)
 08000664 <_ZN7CanCtrl4initEv>:
 public:
     void init();
-	HAL_StatusTypeDef Canrx(uint32_t& RID,uint8_t data[8]);//受信関数(エラー判定のみ)内容は引数に入れ込む。
+	HAL_StatusTypeDef receive(uint32_t& RID,uint8_t data[8]);//受信関数(エラー判定のみ)内容は引数に入れ込む。
 };
 
 void CanCtrl::init(){
@@ -1120,7 +1120,7 @@ void CanCtrl::init(){
  8000666:	b082      	sub	sp, #8
  8000668:	af00      	add	r7, sp, #0
  800066a:	6078      	str	r0, [r7, #4]
-	filter.FilterIdHigh         = 0x100 << 5;                 // フィルターIDの上位16ビット
+	filter.FilterIdHigh         = 0x100 << 5;               // フィルターIDの上位16ビット
  800066c:	687b      	ldr	r3, [r7, #4]
  800066e:	f44f 5200 	mov.w	r2, #8192	; 0x2000
  8000672:	625a      	str	r2, [r3, #36]	; 0x24
@@ -1174,21 +1174,21 @@ void CanCtrl::init(){
  80006be:	bd80      	pop	{r7, pc}
  80006c0:	20000028 	.word	0x20000028
 
-080006c4 <_ZN7CanCtrl5CanrxERmPh>:
+080006c4 <_ZN7CanCtrl7receiveERmPh>:
 
-HAL_StatusTypeDef CanCtrl::Canrx(uint32_t& RID,uint8_t data[8]){
+HAL_StatusTypeDef CanCtrl::receive(uint32_t& RID,uint8_t data[8]){
  80006c4:	b580      	push	{r7, lr}
  80006c6:	b084      	sub	sp, #16
  80006c8:	af00      	add	r7, sp, #0
  80006ca:	60f8      	str	r0, [r7, #12]
  80006cc:	60b9      	str	r1, [r7, #8]
  80006ce:	607a      	str	r2, [r7, #4]
-	if (HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &RxHeader, data) == HAL_OK){
+	if (HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &rx_header, data) == HAL_OK){
  80006d0:	68fb      	ldr	r3, [r7, #12]
  80006d2:	f103 0208 	add.w	r2, r3, #8
  80006d6:	687b      	ldr	r3, [r7, #4]
  80006d8:	2100      	movs	r1, #0
- 80006da:	4815      	ldr	r0, [pc, #84]	; (8000730 <_ZN7CanCtrl5CanrxERmPh+0x6c>)
+ 80006da:	4815      	ldr	r0, [pc, #84]	; (8000730 <_ZN7CanCtrl7receiveERmPh+0x6c>)
  80006dc:	f000 fdda 	bl	8001294 <HAL_CAN_GetRxMessage>
  80006e0:	4603      	mov	r3, r0
  80006e2:	2b00      	cmp	r3, #0
@@ -1197,8 +1197,8 @@ HAL_StatusTypeDef CanCtrl::Canrx(uint32_t& RID,uint8_t data[8]){
  80006e8:	2300      	movne	r3, #0
  80006ea:	b2db      	uxtb	r3, r3
  80006ec:	2b00      	cmp	r3, #0
- 80006ee:	d019      	beq.n	8000724 <_ZN7CanCtrl5CanrxERmPh+0x60>
-		RID = RxHeader.StdId;
+ 80006ee:	d019      	beq.n	8000724 <_ZN7CanCtrl7receiveERmPh+0x60>
+		RID = rx_header.StdId;
  80006f0:	68fb      	ldr	r3, [r7, #12]
  80006f2:	689a      	ldr	r2, [r3, #8]
  80006f4:	68bb      	ldr	r3, [r7, #8]
@@ -1216,17 +1216,17 @@ HAL_StatusTypeDef CanCtrl::Canrx(uint32_t& RID,uint8_t data[8]){
 		HAL_GPIO_WritePin(GPIOB,CAN_LED_Pin,GPIO_PIN_SET);
  8000708:	2201      	movs	r2, #1
  800070a:	f44f 4180 	mov.w	r1, #16384	; 0x4000
- 800070e:	4809      	ldr	r0, [pc, #36]	; (8000734 <_ZN7CanCtrl5CanrxERmPh+0x70>)
+ 800070e:	4809      	ldr	r0, [pc, #36]	; (8000734 <_ZN7CanCtrl7receiveERmPh+0x70>)
  8000710:	f001 fbac 	bl	8001e6c <HAL_GPIO_WritePin>
 //		HAL_Delay(80);
 		HAL_GPIO_WritePin(GPIOB,CAN_LED_Pin,GPIO_PIN_RESET);
  8000714:	2200      	movs	r2, #0
  8000716:	f44f 4180 	mov.w	r1, #16384	; 0x4000
- 800071a:	4806      	ldr	r0, [pc, #24]	; (8000734 <_ZN7CanCtrl5CanrxERmPh+0x70>)
+ 800071a:	4806      	ldr	r0, [pc, #24]	; (8000734 <_ZN7CanCtrl7receiveERmPh+0x70>)
  800071c:	f001 fba6 	bl	8001e6c <HAL_GPIO_WritePin>
 		return HAL_OK;
  8000720:	2300      	movs	r3, #0
- 8000722:	e000      	b.n	8000726 <_ZN7CanCtrl5CanrxERmPh+0x62>
+ 8000722:	e000      	b.n	8000726 <_ZN7CanCtrl7receiveERmPh+0x62>
 	}
 	else{
 		return HAL_ERROR;
@@ -1582,9 +1582,9 @@ inline HAL_StatusTypeDef SolenCtrl::update(uint32_t RID,uint8_t rxData[8]){
  800094c:	46bd      	mov	sp, r7
  800094e:	bd80      	pop	{r7, pc}
 
-08000950 <_ZN9SolenCtrl11get_pre_EMSEv>:
+08000950 <_ZN9SolenCtrl9getPreEMSEv>:
 
-inline mode SolenCtrl::get_pre_EMS(){
+inline mode SolenCtrl::getPreEMS(){
  8000950:	b480      	push	{r7}
  8000952:	b083      	sub	sp, #12
  8000954:	af00      	add	r7, sp, #0
@@ -1815,12 +1815,12 @@ extern"C"{
  8000abc:	f44f 7388 	mov.w	r3, #272	; 0x110
  8000ac0:	617b      	str	r3, [r7, #20]
 		uint8_t RData[8];
-		if (Can.Canrx(RID,RData) == HAL_OK)return;
+		if (Can.receive(RID,RData) == HAL_OK)return;
  8000ac2:	f107 020c 	add.w	r2, r7, #12
  8000ac6:	f107 0314 	add.w	r3, r7, #20
  8000aca:	4619      	mov	r1, r3
  8000acc:	4815      	ldr	r0, [pc, #84]	; (8000b24 <HAL_CAN_RxFifo0MsgPendingCallback+0x70>)
- 8000ace:	f7ff fdf9 	bl	80006c4 <_ZN7CanCtrl5CanrxERmPh>
+ 8000ace:	f7ff fdf9 	bl	80006c4 <_ZN7CanCtrl7receiveERmPh>
  8000ad2:	4603      	mov	r3, r0
  8000ad4:	2b00      	cmp	r3, #0
  8000ad6:	bf0c      	ite	eq
@@ -1829,9 +1829,9 @@ extern"C"{
  8000adc:	b2db      	uxtb	r3, r3
  8000ade:	2b00      	cmp	r3, #0
  8000ae0:	d119      	bne.n	8000b16 <HAL_CAN_RxFifo0MsgPendingCallback+0x62>
-		if(Solen.get_pre_EMS()== mode::enable)return;
+		if(Solen.getPreEMS()== mode::enable)return;
  8000ae2:	4811      	ldr	r0, [pc, #68]	; (8000b28 <HAL_CAN_RxFifo0MsgPendingCallback+0x74>)
- 8000ae4:	f7ff ff34 	bl	8000950 <_ZN9SolenCtrl11get_pre_EMSEv>
+ 8000ae4:	f7ff ff34 	bl	8000950 <_ZN9SolenCtrl9getPreEMSEv>
  8000ae8:	4603      	mov	r3, r0
  8000aea:	2b01      	cmp	r3, #1
  8000aec:	bf0c      	ite	eq
@@ -1854,10 +1854,10 @@ extern"C"{
  8000b10:	b2db      	uxtb	r3, r3
  8000b12:	2b00      	cmp	r3, #0
  8000b14:	e002      	b.n	8000b1c <HAL_CAN_RxFifo0MsgPendingCallback+0x68>
-		if (Can.Canrx(RID,RData) == HAL_OK)return;
+		if (Can.receive(RID,RData) == HAL_OK)return;
  8000b16:	bf00      	nop
  8000b18:	e000      	b.n	8000b1c <HAL_CAN_RxFifo0MsgPendingCallback+0x68>
-		if(Solen.get_pre_EMS()== mode::enable)return;
+		if(Solen.getPreEMS()== mode::enable)return;
  8000b1a:	bf00      	nop
 	}
  8000b1c:	3718      	adds	r7, #24
@@ -1998,9 +1998,9 @@ void main_cpp(){
 //	uint16_t i = 0b1;
 	while(true){//safty_roop
 //		HAL_UART_Receive(&huart2, usart_data, i, 100);//(レジスタモジュール,データ,文字数,タイムアウト(つまりその時間経過したらエラー終了))
-    	if(Solen.get_pre_EMS() == mode::enable){
+    	if(Solen.getPreEMS() == mode::enable){
  8000c0c:	4832      	ldr	r0, [pc, #200]	; (8000cd8 <main_cpp+0x15c>)
- 8000c0e:	f7ff fe9f 	bl	8000950 <_ZN9SolenCtrl11get_pre_EMSEv>
+ 8000c0e:	f7ff fe9f 	bl	8000950 <_ZN9SolenCtrl9getPreEMSEv>
  8000c12:	4603      	mov	r3, r0
  8000c14:	2b01      	cmp	r3, #1
  8000c16:	bf0c      	ite	eq
@@ -2032,9 +2032,9 @@ void main_cpp(){
     		}
 
     	}
-    	if(Solen.get_pre_EMS() == mode::disable){
+    	if(Solen.getPreEMS() == mode::disable){
  8000c46:	4824      	ldr	r0, [pc, #144]	; (8000cd8 <main_cpp+0x15c>)
- 8000c48:	f7ff fe82 	bl	8000950 <_ZN9SolenCtrl11get_pre_EMSEv>
+ 8000c48:	f7ff fe82 	bl	8000950 <_ZN9SolenCtrl9getPreEMSEv>
  8000c4c:	4603      	mov	r3, r0
  8000c4e:	2b00      	cmp	r3, #0
  8000c50:	bf0c      	ite	eq

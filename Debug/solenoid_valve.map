@@ -2404,9 +2404,9 @@ LOAD c:/st/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .text._ZN7CanCtrl4initEv
                 0x0000000008000664       0x60 ./Core/Src/wrapper.o
                 0x0000000008000664                CanCtrl::init()
- .text._ZN7CanCtrl5CanrxERmPh
+ .text._ZN7CanCtrl7receiveERmPh
                 0x00000000080006c4       0x74 ./Core/Src/wrapper.o
-                0x00000000080006c4                CanCtrl::Canrx(unsigned long&, unsigned char*)
+                0x00000000080006c4                CanCtrl::receive(unsigned long&, unsigned char*)
  .text._ZN8solenoid12value_updateEh
                 0x0000000008000738       0x78 ./Core/Src/wrapper.o
                 0x0000000008000738                solenoid::value_update(unsigned char)
@@ -2425,9 +2425,9 @@ LOAD c:/st/stm32cubeide_1.9.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .text._ZN9SolenCtrl6updateEmPh
                 0x00000000080008dc       0x74 ./Core/Src/wrapper.o
                 0x00000000080008dc                SolenCtrl::update(unsigned long, unsigned char*)
- .text._ZN9SolenCtrl11get_pre_EMSEv
+ .text._ZN9SolenCtrl9getPreEMSEv
                 0x0000000008000950       0x16 ./Core/Src/wrapper.o
-                0x0000000008000950                SolenCtrl::get_pre_EMS()
+                0x0000000008000950                SolenCtrl::getPreEMS()
  .text._ZN9SolenCtrl11set_pre_EMSE4mode
                 0x0000000008000966       0x1c ./Core/Src/wrapper.o
                 0x0000000008000966                SolenCtrl::set_pre_EMS(mode)

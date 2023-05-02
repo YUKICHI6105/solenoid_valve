@@ -6,8 +6,8 @@
  */
 #include <main.h>
 #include <CanCtrl.hpp>
-#include <SolenCtrl.hpp>
 #include <stm32f1xx_hal_uart.h>
+#include <SolenCtrl.hpp>
 
 CanCtrl Can;
 SolenCtrl Solen;
@@ -17,8 +17,8 @@ extern"C"{
 	void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 		uint32_t RID = 0x110;
 		uint8_t RData[8];
-		if (Can.Canrx(RID,RData) == HAL_OK)return;
-		if(Solen.get_pre_EMS()== mode::enable)return;
+		if (Can.receive(RID,RData) == HAL_OK)return;
+		if(Solen.getPreEMS()== mode::enable)return;
 		if (Solen.update(RID,RData) == HAL_OK)return;
 	}
 
@@ -56,7 +56,7 @@ void main_cpp(){
 //	uint16_t i = 0b1;
 	while(true){//safty_roop
 //		HAL_UART_Receive(&huart2, usart_data, i, 100);//(レジスタモジュール,データ,文字数,タイムアウト(つまりその時間経過したらエラー終了))
-    	if(Solen.get_pre_EMS() == mode::enable){
+    	if(Solen.getPreEMS() == mode::enable){
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){//modeの状態違反の確認
     			Solen.check_Safty_OK();
     		}
@@ -65,7 +65,7 @@ void main_cpp(){
     		}
 
     	}
-    	if(Solen.get_pre_EMS() == mode::disable){
+    	if(Solen.getPreEMS() == mode::disable){
     		if((GPIOC->IDR & GPIO_IDR_IDR13)){//EMS解除時
     			Solen.check_Safty_ERROR();
     			Solen.set_pre_EMS(mode::enable);

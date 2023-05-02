@@ -17,15 +17,15 @@ class CanCtrl {
 private:
 	uint32_t test;
 	uint8_t d;
-	CAN_RxHeaderTypeDef RxHeader;//受信用フレーム設定
+	CAN_RxHeaderTypeDef rx_header;//受信用フレーム設定
 	CAN_FilterTypeDef filter;//受信時に中身を仕分けるためのパラメーター設定
 public:
     void init();
-	HAL_StatusTypeDef Canrx(uint32_t& RID,uint8_t data[8]);//受信関数(エラー判定のみ)内容は引数に入れ込む。
+	HAL_StatusTypeDef receive(uint32_t& RID,uint8_t data[8]);//受信関数(エラー判定のみ)内容は引数に入れ込む。
 };
 
 void CanCtrl::init(){
-	filter.FilterIdHigh         = 0x100 << 5;                 // フィルターIDの上位16ビット
+	filter.FilterIdHigh         = 0x100 << 5;               // フィルターIDの上位16ビット
 	filter.FilterIdLow          = 0;                        // フィルターIDの下位16ビット
 	filter.FilterMaskIdHigh     = 0x7f8 << 5;               // フィルターマスクの上位16ビット
 	filter.FilterMaskIdLow      = 0b110;                    // フィルターマスクの下位16ビット
@@ -39,9 +39,9 @@ void CanCtrl::init(){
 	HAL_CAN_ConfigFilter(&hcan, &filter);
 }
 
-HAL_StatusTypeDef CanCtrl::Canrx(uint32_t& RID,uint8_t data[8]){
-	if (HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &RxHeader, data) == HAL_OK){
-		RID = RxHeader.StdId;
+HAL_StatusTypeDef CanCtrl::receive(uint32_t& RID,uint8_t data[8]){
+	if (HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &rx_header, data) == HAL_OK){
+		RID = rx_header.StdId;
 		test = RID;
 		d=data[0];
 		HAL_GPIO_WritePin(GPIOB,CAN_LED_Pin,GPIO_PIN_SET);
