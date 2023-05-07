@@ -12,7 +12,7 @@ enum class mode {
 
 struct solenoid{
 	uint32_t BID;
-	uint16_t Valve_Pin;            //GPIOPin
+	uint16_t valve_Pin;            //GPIOPin
 	GPIO_TypeDef* GPIO = GPIOB;    //GPIOグループ
 	uint32_t msk;                  //pinの状態の確認
 	mode valve_Mode = mode::enable;//動作許可(今回はデフォルトで許可)
