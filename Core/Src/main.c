@@ -53,7 +53,7 @@ static void MX_GPIO_Init(void);
 static void MX_CAN_Init(void);
 static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+void main_cpp();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/

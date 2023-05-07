@@ -1,7 +1,7 @@
 /*
  *  CanCtrl.hpp
  *
- *  Created on: 2023/04/13
+ *  Created on: 2023/05/07
  *      Author: ykc
  */
 
@@ -15,13 +15,12 @@ extern "C"{
 
 class CanCtrl {
 private:
-	uint32_t test;
-	uint8_t rx_data;
-	CAN_RxHeaderTypeDef rx_header;//受信用フレーム設定
+	uint8_t rxData;
+	CAN_RxHeaderTypeDef rxHeader;//受信用フレーム設定
 	CAN_FilterTypeDef filter;//受信時に中身を仕分けるためのパラメーター設定
 public:
     void init();
-	HAL_StatusTypeDef receive(uint32_t& RID,uint8_t data[8]);//受信関数(エラー判定のみ)内容は引数に入れ込む。
+	bool receive(uint32_t& RID,uint8_t data[8]);//受信関数(エラー判定のみ)内容は引数に入れ込む。
 };
 
 void CanCtrl::init(){
@@ -39,20 +38,17 @@ void CanCtrl::init(){
 	HAL_CAN_ConfigFilter(&hcan, &filter);
 }
 
-HAL_StatusTypeDef CanCtrl::receive(uint32_t& RID,uint8_t data[8]){
-	if (HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &rx_header, data) == HAL_OK){
-		RID = rx_header.StdId;
-		test = RID;
-		rx_data=data[0];
+bool CanCtrl::receive(uint32_t& RID,uint8_t data[8]){
+	if (HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &rxHeader, data) == HAL_OK){
+		RID = rxHeader.StdId;
+		rxData=data[0];
 		HAL_GPIO_WritePin(GPIOB,CAN_LED_Pin,GPIO_PIN_SET);
 //		HAL_Delay(80);
 		HAL_GPIO_WritePin(GPIOB,CAN_LED_Pin,GPIO_PIN_RESET);
-		return HAL_OK;
-
-
+		return true;
 	}
 	else{
-		return HAL_ERROR;
+		return false;
 	}
 }
 
