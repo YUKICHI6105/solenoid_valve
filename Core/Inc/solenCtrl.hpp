@@ -15,23 +15,23 @@ struct Solenoid{
 	uint16_t valvePin = 0;         //GPIOPin
 	GPIO_TypeDef* gpio = GPIOB;    //GPIOグループ
 	uint32_t msk;                  //pinの状態の確認
-	mode valveMode = mode::enable; //動作許可(今回はデフォルトで許可)
+	mode valveMode = mode::disable; //動作許可(今回はデフォルトで許可)
 	bool valueUpdate(uint8_t receiveData);
-	void valveCheck(mode getPreEMS);//もう使ってない
 };
 
 inline bool Solenoid::valueUpdate(uint8_t receiveData){
 	if (valveMode == mode::enable){
 		if (receiveData == 0x1){
 			HAL_GPIO_WritePin(gpio,valvePin,GPIO_PIN_SET);
-			if(!(gpio == GPIOA)){
+			if(gpio->ODR & msk){
 			HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_SET);
 			}
 			return true;
 		}
 		if (receiveData == 0x0){
+			if(gpio->ODR & msk){
 			HAL_GPIO_WritePin(gpio,valvePin,GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port, LED_YELLOW_Pin, GPIO_PIN_RESET);
+			}
 			return true;
 		}
 		else{
@@ -43,34 +43,13 @@ inline bool Solenoid::valueUpdate(uint8_t receiveData){
 	}
 }
 
-/*
-inline void Solenoid::safty_OK(){
-	if(valveMode == mode::disable){
-//		if(GPIO->ODR & msk){
-		HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
-//		}
-	}
-}
-
-inline void solenoid::safty_ERROR(){
-//	    if(!(GPIO->ODR & msk)){}
-//		else{
-		    HAL_GPIO_WritePin(GPIO,Valve_Pin,GPIO_PIN_RESET);
-//		}
-		if(valve_Mode == mode::disable){}
-		else{
-//		    valve_Mode = disable;
-		}
-}
-*/
-
-
 class SolenoidCtrl{
 private:
 	mode preEMS = mode::disable;//EMSの管理
 	Solenoid valve[7];
 public:
 	void init();
+	bool modeSet(uint32_t receiveID,uint8_t receiveData[8]);
 	bool update(uint32_t RID,uint8_t rxData[8]);
 	mode getPreEMS();
 	bool setPreEMS(mode ems);
@@ -99,6 +78,24 @@ inline void SolenoidCtrl::init(){
 	valve[6].msk=GPIO_ODR_ODR8;
 }
 
+inline bool SolenoidCtrl::modeSet(uint32_t receiveID,uint8_t receiveData[8]){
+	if(receiveID == 0x100){
+		for(int i=0;i<7;i++){
+			if(receiveData[i] == 0x1){
+				valve[i].valveMode = mode::enable;
+			}
+			if(receiveData[i] == 0x0){
+				valve[i].valveMode = mode::disable;
+			}
+
+		}
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
 inline bool SolenoidCtrl::update(uint32_t RID,uint8_t rxData[8]){
 	uint8_t data = rxData[0];
 	for(int i=0;i<7;i++){
@@ -124,7 +121,7 @@ inline bool SolenoidCtrl::downEMS(){
 	for(int i=0;i<7;i++){
 		HAL_GPIO_WritePin(valve[i].gpio,valve[i].valvePin,GPIO_PIN_RESET);
 			if(valve[i].valveMode == mode::enable){
-		//	   valve_Mode = disable;
+			   valve[i].valveMode = mode::disable;
 			}
 	}
 	preEMS = mode::disable;
@@ -133,61 +130,23 @@ inline bool SolenoidCtrl::downEMS(){
 	return true;
 }
 
-/*
-
-inline void SolenCtrl::check_Safty_OK(){
-	for (int i=0;i<7;i++){
-		Valve[i].safty_OK();
-	}
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
-}
-
-inline void SolenCtrl::check_Safty_ERROR(){
-	for (int i=0;i<7;i++){
-		Valve[i].safty_ERROR();
-	}
-}
-*/
 inline void SolenoidCtrl::allValveCheck(mode getPreEMS){
 	for (int i=0;i<7;i++){
 		if(getPreEMS == mode::enable){
 			if(valve[i].valveMode == mode::disable){
-		//		if(valve[i].gpio->ODR & msk){
+				if(valve[i].gpio->ODR & valve[i].msk){
 					HAL_GPIO_WritePin(valve[i].gpio,valve[i].valvePin,GPIO_PIN_RESET);
-		//		}
+				}
 			}
 		}
 		if(getPreEMS == mode::disable){
-	//		if(!(valve[i].gpio->ODR & msk)){}
-	//		else{
-			    HAL_GPIO_WritePin(valve[i].gpio,valve[i].valvePin,GPIO_PIN_RESET);
-	//	    }
+			if(!(valve[i].gpio->ODR & valve[i].msk)){
+				HAL_GPIO_WritePin(valve[i].gpio,valve[i].valvePin,GPIO_PIN_RESET);
+			}
 			if(valve[i].valveMode == mode::disable){}
 			else{
-	//		valve[i].valve_Mode = disable;
+			valve[i].valveMode = mode::disable;
 			}
-		}
-	}
-}
-
-//valve[i].valveCheck(SolenoidCtrl::getPreEMS());
-
-inline void Solenoid::valveCheck(mode getPreEMS){//もう使ってない
-	if(getPreEMS == mode::enable){
-		if(valveMode == mode::disable){
-	//		if(GPIO->ODR & msk){
-				HAL_GPIO_WritePin(gpio,valvePin,GPIO_PIN_RESET);
-	//		}
-		}
-	}
-	if(getPreEMS == mode::disable){
-//		if(!(GPIO->ODR & msk)){}
-//		else{
-		    HAL_GPIO_WritePin(gpio,valvePin,GPIO_PIN_RESET);
-//	    }
-		if(valveMode == mode::disable){}
-		else{
-//		valve_Mode = disable;
 		}
 	}
 }

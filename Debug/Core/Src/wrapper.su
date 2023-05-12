@@ -1,16 +1,17 @@
 ../Core/lib/Inc/CanCtrl.hpp:26:6:void CanCtrl::init()	16	static
 ../Core/lib/Inc/CanCtrl.hpp:41:6:bool CanCtrl::receive(uint32_t&, uint8_t*)	24	static
-../Core/Inc/SolenCtrl.hpp:23:13:bool Solenoid::valueUpdate(uint8_t)	16	static
-../Core/Inc/SolenCtrl.hpp:81:13:void SolenoidCtrl::init()	24	static
-../Core/Inc/SolenCtrl.hpp:102:13:bool SolenoidCtrl::update(uint32_t, uint8_t*)	32	static
-../Core/Inc/SolenCtrl.hpp:114:13:mode SolenoidCtrl::getPreEMS()	16	static
-../Core/Inc/SolenCtrl.hpp:118:13:bool SolenoidCtrl::setPreEMS(mode)	16	static
-../Core/Inc/SolenCtrl.hpp:123:13:bool SolenoidCtrl::downEMS()	24	static
-../Core/Inc/SolenCtrl.hpp:151:13:void SolenoidCtrl::allValveCheck(mode)	24	static
+../Core/Inc/SolenCtrl.hpp:22:13:bool Solenoid::valueUpdate(uint8_t)	16	static
+../Core/Inc/SolenCtrl.hpp:60:13:void SolenoidCtrl::init()	24	static
+../Core/Inc/SolenCtrl.hpp:81:13:bool SolenoidCtrl::modeSet(uint32_t, uint8_t*)	32	static
+../Core/Inc/SolenCtrl.hpp:99:13:bool SolenoidCtrl::update(uint32_t, uint8_t*)	32	static
+../Core/Inc/SolenCtrl.hpp:111:13:mode SolenoidCtrl::getPreEMS()	16	static
+../Core/Inc/SolenCtrl.hpp:115:13:bool SolenoidCtrl::setPreEMS(mode)	16	static
+../Core/Inc/SolenCtrl.hpp:120:13:bool SolenoidCtrl::downEMS()	24	static
+../Core/Inc/SolenCtrl.hpp:133:13:void SolenoidCtrl::allValveCheck(mode)	24	static
 ../Core/Inc/SolenCtrl.hpp:13:8:Solenoid::Solenoid()	16	static
-../Core/Inc/SolenCtrl.hpp:68:7:SolenoidCtrl::SolenoidCtrl()	24	static
+../Core/Inc/SolenCtrl.hpp:46:7:SolenoidCtrl::SolenoidCtrl()	24	static
 ../Core/Src/wrapper.cpp:17:7:void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef*)	32	static
-../Core/Src/wrapper.cpp:25:7:void HAL_GPIO_EXTI_Callback(uint16_t)	16	static
-../Core/Src/wrapper.cpp:36:6:void main_cpp()	16	static
-../Core/Src/wrapper.cpp:83:1:void __static_initialization_and_destruction_0(int, int)	16	static
-../Core/Src/wrapper.cpp:83:1:cpp)	8	static
+../Core/Src/wrapper.cpp:26:7:void HAL_GPIO_EXTI_Callback(uint16_t)	16	static
+../Core/Src/wrapper.cpp:37:6:void main_cpp()	16	static
+../Core/Src/wrapper.cpp:84:1:void __static_initialization_and_destruction_0(int, int)	16	static
+../Core/Src/wrapper.cpp:84:1:cpp)	8	static

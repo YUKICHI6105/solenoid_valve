@@ -17,9 +17,10 @@ extern"C"{
 	void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan){
 		uint32_t receiveID = 0x110;
 		uint8_t receiveData[8];
-		if (can.receive(receiveID,receiveData) == true)return;
-		if(solenoid.getPreEMS() == mode::enable)return;
-		if (solenoid.update(receiveID,receiveData) == true)return;
+		if (can.receive(receiveID,receiveData) == false)return;
+		if(solenoid.getPreEMS() == mode::disable)return;
+		if (solenoid.modeSet(receiveID,receiveData) == true)return;
+		if (solenoid.update(receiveID,receiveData) == false)return;
 	}
 
 	void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
