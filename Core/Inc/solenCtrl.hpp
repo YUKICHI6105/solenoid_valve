@@ -11,7 +11,7 @@ enum class mode {
 };
 
 struct Solenoid{
-	uint32_t canID = 0x110;
+	uint32_t canID = 0x10e;
 	uint16_t valvePin = 0;         //GPIOPin
 	GPIO_TypeDef* gpio = GPIOB;    //GPIOグループ
 	uint32_t msk;                  //pinの状態の確認

@@ -1,5 +1,6 @@
-../Core/lib/Inc/CanCtrl.hpp:26:6:void CanCtrl::init()	16	static
-../Core/lib/Inc/CanCtrl.hpp:41:6:bool CanCtrl::receive(uint32_t&, uint8_t*)	24	static
+../Core/lib/Inc/CanCtrl.hpp:29:13:void CanCtrl::init()	16	static
+../Core/lib/Inc/CanCtrl.hpp:44:13:bool CanCtrl::receive(uint32_t&, uint8_t*)	24	static
+../Core/lib/Inc/CanCtrl.hpp:56:13:void CanCtrl::ledCan()	16	static
 ../Core/Inc/SolenCtrl.hpp:22:13:bool Solenoid::valueUpdate(uint8_t)	16	static
 ../Core/Inc/SolenCtrl.hpp:60:13:void SolenoidCtrl::init()	24	static
 ../Core/Inc/SolenCtrl.hpp:81:13:bool SolenoidCtrl::modeSet(uint32_t, uint8_t*)	32	static
@@ -8,10 +9,11 @@
 ../Core/Inc/SolenCtrl.hpp:115:13:bool SolenoidCtrl::setPreEMS(mode)	16	static
 ../Core/Inc/SolenCtrl.hpp:120:13:bool SolenoidCtrl::downEMS()	24	static
 ../Core/Inc/SolenCtrl.hpp:133:13:void SolenoidCtrl::allValveCheck(mode)	24	static
+../Core/lib/Inc/CanCtrl.hpp:16:7:CanCtrl::CanCtrl()	16	static
 ../Core/Inc/SolenCtrl.hpp:13:8:Solenoid::Solenoid()	16	static
 ../Core/Inc/SolenCtrl.hpp:46:7:SolenoidCtrl::SolenoidCtrl()	24	static
 ../Core/Src/wrapper.cpp:17:7:void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef*)	32	static
 ../Core/Src/wrapper.cpp:26:7:void HAL_GPIO_EXTI_Callback(uint16_t)	16	static
 ../Core/Src/wrapper.cpp:37:6:void main_cpp()	16	static
-../Core/Src/wrapper.cpp:84:1:void __static_initialization_and_destruction_0(int, int)	16	static
-../Core/Src/wrapper.cpp:84:1:cpp)	8	static
+../Core/Src/wrapper.cpp:85:1:void __static_initialization_and_destruction_0(int, int)	16	static
+../Core/Src/wrapper.cpp:85:1:cpp)	8	static
