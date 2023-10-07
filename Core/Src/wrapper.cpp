@@ -18,18 +18,18 @@ extern"C"{
 		uint32_t receiveID = 0x110;
 		uint8_t receiveData[8];
 		if (can.receive(receiveID,receiveData) == false)return;
-		if(solenoid.getPreEMS() == mode::disable)return;
+		if (solenoid.getPreEMS() == mode::disable)return;
 		if (solenoid.modeSet(receiveID,receiveData) == true)return;
 		if (solenoid.update(receiveID,receiveData) == false)return;
 	}
 
 	void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-		if(!(GPIO_Pin == EMS_Pin))return;
-		if(solenoid.downEMS() == true){
+		if (!(GPIO_Pin == EMS_Pin))return;
+		if (solenoid.downEMS() == true){
 			HAL_GPIO_WritePin(LED_RED_GPIO_Port,LED_RED_Pin,GPIO_PIN_SET);
 		}
 		else{
-			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);;
+			HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, GPIO_PIN_RESET);
 		}
 	}
 }
@@ -66,7 +66,7 @@ void main_cpp(){
     			solenoid.downEMS();//コールバックだけだと一定の確率でバグる。意味不明。<-割り込み使用時に注意点があるらしい。
     		}
     	}
-    	if(solenoid.getPreEMS() == mode::disable){
+    	if (solenoid.getPreEMS() == mode::disable){
     		if(GPIOC->IDR & GPIO_IDR_IDR13){//EMS解除時
     			solenoid.allValveCheck(solenoid.getPreEMS());
     			solenoid.setPreEMS(mode::enable);
